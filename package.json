@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "amazon like store-front app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcnimble/bamazon.git"
+  },
+  "author": "Jen G",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcnimble/bamazon/issues"
+  },
+  "homepage": "https://github.com/jcnimble/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^6.3.1",
+    "mysql": "^2.17.1"
+  }
+}
