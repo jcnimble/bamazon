@@ -24,77 +24,82 @@ connection.connect(function (err) {
   start();
 });
 
+var productPick;
 
 function start() {
-  // query the database for all items being auctioned
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) { console.log(err) }
     console.table(res)
-    inquirer
-      .prompt([
-        {
-          name: "purchaseChoice",
-          type: "input",
-          message: "What is the ID of the item you would like to purchase? [Quit with Q]"
-        },
-        {
-          name: "quantityPurchase",
-          type: "input",
-          message: "What quantity would you like to purchase?",
-          validate: function (value) {
-            if (isNaN(value) === false) {
-              return true;
-            }
-            return false;
-          }
-        }
-      ])
-      .then(function (answer) {
-        if (err) throw err;
-        if (answer.choice === "Q") {
-          console.log("Have a nice day!");
-          connection.end();
-        }
-        else {
-
-          var chosenItem;
-          for (var i = 0; i < res.length; i++) {
-            if (res[i].item_id == answer.purchaseChoice) {
-              chosenItem = res[i];
-            }
-          }
-          // determine quantity purchased and stock quantity
-          if (chosenItem.stock_quantity > parseInt(answer.quantityPurchase)) {
-            var revQuantity = chosenItem.stock_quantity - parseInt(answer.quantityPurchase)
-            console.log(revQuantity);
-
-            connection.query(
-              "UPDATE products SET ? WHERE ?",
-              [
-                {
-                  stock_quantity: revQuantity
-                },
-                {
-                  item_id: chosenItem.item_id
-                }
-              ],
-              function (error) {
-                if (error) throw err;
-                var totalPurchase = chosenItem.price * parseInt(answer.quantityPurchase)
-                console.log("Thank you for shopping!\nEnjoy your " + chosenItem.product_name +
-                  " purchase.\nYou purchased " + answer.quantityPurchase + " item(s) for a grand total of $" + totalPurchase);
-                console.log("===========================================================")  
-                start();
-              }
-            );
-          }
-          else {
-            console.log("Insufficient Quatity: Please select another product or quantity.");
-            start();
-          }
-        }
-      });
+  
+  inquirer
+    .prompt({
+      name: "purchaseChoice",
+      type: "input",
+      message: "What is the ID of the item you would like to purchase? [Quit with Q]"
+    })
+    .then(function (answer) {
+      productPick = answer.purchaseChoice
+      // based on their answer, either call the bid or the post functions
+      if (productPick === "Q") {
+        console.log("Have a nice day!");
+        connection.end();
+      } else {
+        buy();
+      }
+    });
   });
 }
 
+function buy() {
+  connection.query("SELECT * FROM products", function (err, res) {
+    if (err) { console.log(err) }
 
+  inquirer
+    .prompt([
+      {
+        name: "quantityPurchase",
+        type: "input",
+        message: "What quantity would you like to purchase?",
+      }
+    ])
+    .then(function (answer) {
+      var chosenItem;
+      for (var i = 0; i < res.length; i++) {
+        if (res[i].item_id == productPick) {
+          chosenItem = res[i];
+        }
+ 
+      }
+      if (chosenItem.stock_quantity > parseInt(answer.quantityPurchase)) {
+        var revQuantity = chosenItem.stock_quantity - parseInt(answer.quantityPurchase)
+        console.log("===========================================================");
+
+        connection.query(
+          "UPDATE products SET ? WHERE ?",
+          [
+            {
+              stock_quantity: revQuantity
+            },
+            {
+              item_id: chosenItem.item_id
+            }
+          ],
+          function (error) {
+            if (error) throw err;
+            var totalPurchase = chosenItem.price * parseInt(answer.quantityPurchase)
+            console.log("Thank you for shopping!\nEnjoy your " + chosenItem.product_name +
+              " purchase.\nYou purchased " + answer.quantityPurchase + " item(s) for a grand total of $" + totalPurchase);
+            console.log("===========================================================")
+            start();
+          }
+        );
+      }
+
+      else {
+        console.log("Insufficient Quatity: Please select another product or quantity.");
+        start();
+      }
+
+    });
+  });
+}
