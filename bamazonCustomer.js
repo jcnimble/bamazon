@@ -40,7 +40,7 @@ function start() {
     .then(function (answer) {
       productPick = answer.purchaseChoice
       // based on their answer, either call the bid or the post functions
-      if (productPick === "Q") {
+      if (productPick === "Q"||"q") {
         console.log("Have a nice day!");
         connection.end();
       } else {

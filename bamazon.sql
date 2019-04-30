@@ -24,3 +24,4 @@ INSERT INTO products (product_name, department_name, price, stock_quantity  ) va
 INSERT INTO products (product_name, department_name, price, stock_quantity  ) values ("Sleeping Bag", "Gear", 48.00, 24);
 INSERT INTO products (product_name, department_name, price, stock_quantity  ) values ("Tent", "Gear", 96.00, 12);
 INSERT INTO products (product_name, department_name, price, stock_quantity  ) values ("Camp Stove", "Gear", 72.00, 6);
+

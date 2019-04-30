@@ -57,8 +57,8 @@ function start() {
 }
 
 function totalSales() {
-    console.log("Current items for sale...\n");
-    connection.query("SELECT * FROM products", function (err, res) {
+    console.log("\nCurrent items for sale, grouped by Department...\n");
+    connection.query("SELECT * FROM products ORDER BY department_name", function (err, res) {
         if (err) { console.log(err) }
         console.table(res);
         start();
@@ -66,15 +66,16 @@ function totalSales() {
 }
 
 function lowInventory() {
-    connection.query("SELECT * FROM products", function (err, res) {
-        if (err) { console.log(err) }
+    console.log("\nItems with stock quantities less than 5...\n");
+    var query = "SELECT * FROM products WHERE stock_quantity <= 5 ORDER BY stock_quantity DESC";
+    connection.query(query, function (err, res) {
         console.table(res);
         start();
     });
 }
 
 function addInventory() {
-    console.log("Updating stock...\n");
+    console.log("\nUpdating stock...\n");
     // query the database for all items being auctioned
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
@@ -104,7 +105,7 @@ function addInventory() {
                 console.log(answer.choice);
                 console.log(answer.stock);
                 console.log(results)
-                
+
 
                 // get the information of the chosen item
                 var chosenItem;
@@ -144,7 +145,7 @@ function addInventory() {
 }
 
 function addProduct() {
-    console.log("Adding a new product...\n");
+    console.log("\nAdding a new product...\n");
     inquirer
         .prompt([
             {
