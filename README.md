@@ -57,6 +57,8 @@ This was pretty straightforward based on in-class exercises. I had difficulty us
 
 ## bamazonManager
 
+![Screenshot](Screenshot 2019-04-30 23.45.14.png)
+
 * Running this application will:
 
   * List a set of menu options:
