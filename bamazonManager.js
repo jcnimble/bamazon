@@ -79,7 +79,7 @@ function addInventory() {
     // query the database for all items being auctioned
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        console.log(results)
+
         // once you have the items, prompt the user for which they'd like to bid on
         inquirer
             .prompt([
@@ -102,44 +102,34 @@ function addInventory() {
                 }
             ])
             .then(function (answer) {
-                console.log(answer.choice);
-                console.log(answer.stock);
-                console.log(results)
-
+                var inventoryPick = answer.choice;
 
                 // get the information of the chosen item
+                if (err) throw err;
                 var chosenItem;
                 for (var i = 0; i < results.length; i++) {
-                    if (results[i].item_name == answer.choice) {
+                    if (results[i].product_name == inventoryPick) {
                         chosenItem = results[i];
                     }
-                    console.log(chosenItem);
                 }
-                // must be greater then 0
+
                 if (parseInt(answer.stock) > 0) {
-                    var revStock = chosenItem.stock_quantity + parseInt(answer.stock)
+                    var revStock = chosenItem.stock_quantity + parseInt(answer.stock);
                     connection.query(
-                        "UPDATE auctions SET ? WHERE ?",
-                        [
-                            {
-                                stock_quantity: revStock
-                            },
-                            {
-                                id: chosenItem.item_id
-                            }
-                        ],
-                        function (error) {
-                            if (error) throw err;
-                            console.log("Bid placed successfully!");
+                        'UPDATE products SET stock_quantity = ? Where item_id = ?',
+                        [revStock, chosenItem.item_id],
+                        (err, result) => {
+                            if (err) throw err;
+                            console.log("The stock quantity of " + chosenItem.product_name + " tis " + revStock + ".");
                             start();
                         }
                     );
                 }
                 else {
-                    // bid wasn't high enough, so apologize and start over
-                    console.log("You need to add a number greater than zero. Try again...");
+                    console.log("You need to add a number. Try again...")
                     start();
                 }
+
             });
     });
 }
