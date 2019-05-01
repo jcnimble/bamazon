@@ -22,7 +22,7 @@ This app requires the MySQL, Inquirer and console.table npm packages :
 
 ## bamazonCustomer
 
-![](Screenshot 2019-04-30 23.43.48.png)
+![Screenshot](Screenshot 2019-04-30 23.43.48.png)
 
 * Based on a SQL Database called `bamazon`.
 
