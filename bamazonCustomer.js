@@ -38,11 +38,15 @@ function start() {
       message: "What is the ID of the item you would like to purchase? [Quit with Q]"
     })
     .then(function (answer) {
+      // console.log(answer.purchaseChoice)
+      
       productPick = answer.purchaseChoice
+      // console.log(productPick)
       // based on their answer, either call the bid or the post functions
       if (productPick === "Q"||"q") {
-        console.log("Have a nice day!");
-        connection.end();
+        buy();
+        // console.log("Have a nice day!");
+        // connection.end();
       } else {
         buy();
       }
@@ -63,10 +67,12 @@ function buy() {
       }
     ])
     .then(function (answer) {
+      // console.log(answer.quantityPurchase)
       var chosenItem;
       for (var i = 0; i < res.length; i++) {
         if (res[i].item_id == productPick) {
           chosenItem = res[i];
+        // console.log(chosenItem)
         }
  
       }

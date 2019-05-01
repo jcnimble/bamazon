@@ -120,7 +120,7 @@ function addInventory() {
                         [revStock, chosenItem.item_id],
                         (err, result) => {
                             if (err) throw err;
-                            console.log("The stock quantity of " + chosenItem.product_name + " tis " + revStock + ".");
+                            console.log("The stock quantity of " + chosenItem.product_name + " is " + revStock + ".");
                             start();
                         }
                     );
