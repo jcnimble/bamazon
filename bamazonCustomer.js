@@ -31,22 +31,18 @@ function start() {
     if (err) { console.log(err) }
     console.table(res)
   
-  inquirer
+    inquirer
     .prompt({
       name: "purchaseChoice",
       type: "input",
       message: "What is the ID of the item you would like to purchase? [Quit with Q]"
     })
     .then(function (answer) {
-      // console.log(answer.purchaseChoice)
-      
       productPick = answer.purchaseChoice
-      // console.log(productPick)
       // based on their answer, either call the bid or the post functions
-      if (productPick === "Q"||"q") {
-        buy();
-        // console.log("Have a nice day!");
-        // connection.end();
+      if (productPick === "Q") {
+        console.log("Have a nice day!");
+        connection.end();
       } else {
         buy();
       }
